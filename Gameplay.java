@@ -1,5 +1,7 @@
 package asteroids;
 
+import java.awt.Color;
+
 import jplay.GameImage;
 import jplay.Keyboard;
 import jplay.Physics;
@@ -11,6 +13,11 @@ public class Gameplay {
 	Keyboard teclado;
 	Physics fisica;
 	Nave player;
+	int nivel = 1;
+	int Score[] = {0};
+	int qtd_asteroides = 4;
+	int asteroides_destruidos = 0;
+	Asteroides asteroides;
 	boolean executando = true;
 	
 	public Gameplay(Window janela) {
@@ -33,15 +40,17 @@ public class Gameplay {
 		player.setX(janela.getWidth()/2 - player.width/2);
 		player.setY(janela.getHeight()/2 - player.height/2);
 		fisica.createBodyFromSprite(player, false);
-		//player.getBody().m_sweep.a = (float) Math.toRadians(Math.PI/2);
+		asteroides = new Asteroides(qtd_asteroides, fisica);
 	}
 	
 	public void desenha() {
 		this.fundo.draw();
-		//player.update();
+		asteroides.desenha(janela);
+		player.desenha_vidas();
+		janela.drawText("Score: "+Score[0], 0, 10, new Color(255,255,255));
 		this.player.draw();
 		player.tiro.desenha_tiro(player);
-		player.tiro.upadate_tiro(janela, player);
+		player.tiro.upadate_tiro(janela, asteroides, Score);
 		fisica.update();
 		this.janela.update();
 		janela.delay(12);
@@ -50,24 +59,37 @@ public class Gameplay {
 	public void loop() {
 		while(executando) {
 			desenha();
-			player.ultimo_disparo += janela.deltaTime()/1000.0;
+			if (player.cont_ressurection > player.cooldown_ressurection) {
+				player.loadImage("Images/nave11.png");
+				if (asteroides.colisao_jogador(player, janela)) {
+					//Instancia classe Gameover
+				}
+			}
+			else {
+				player.loadImage("Images/nave11Ghost.png");
+			}
+			if (asteroides.pedrinhas.size() == 0) {//recomeça se todos foram destruídos
+				qtd_asteroides += 1;
+				asteroides = new Asteroides(qtd_asteroides, fisica);
+			}
+			player.ultimo_disparo += janela.deltaTime(); //delta time retorna o tempo em milisegundos
+			player.cont_ressurection += janela.deltaTime();//conta o tempo desde que o player morreu
 			player.getBody().setAngularVelocity(0);
 			//comandos do jogador
 			if (teclado.keyDown(Keyboard.LEFT_KEY)) {
-				player.getBody().setAngularVelocity(4);
+				player.getBody().setAngularVelocity(3);
 			}
 			else if (teclado.keyDown(Keyboard.RIGHT_KEY)) {
-				player.getBody().setAngularVelocity(-4);
+				player.getBody().setAngularVelocity(-3);
 			}
 			if (teclado.keyDown(Keyboard.UP_KEY)){
-				player.applyForceY(20*Math.sin(player.getBody().getAngle()));
-				player.applyForceX(20*Math.cos(player.getBody().getAngle()));
+				player.acelera();
 			}
-			if (teclado.keyDown(Keyboard.SPACE_KEY)) {
+			if (teclado.keyDown(Keyboard.SPACE_KEY) && player.ultimo_disparo > player.reload) {
 				player.tiro.inicializa_tiro(player, fisica);
 				player.ultimo_disparo = 0;
 			}
-			//limites da tela
+			//limites da tela do jogador
 			if (player.y > janela.getHeight()) {
 				player.setY(-player.height);
 			}

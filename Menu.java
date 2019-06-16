@@ -26,17 +26,16 @@ public class Menu {
         play = new GameImage("Images/Play.png");
         rank = new GameImage("Images/Rank.png");
         quit = new GameImage("Images/Quit.png");
-        posiciona_botao();
+        posiciona_botoes();
         mouse = janela.getMouse();
-
     }
-    void posiciona_botao() {
+    void posiciona_botoes() {
     	play.x = janela.getWidth()/2 - play.width/2;
-    	play.y = 2 * play.height;
+    	play.y = 4 * play.height;
     	rank.x = janela.getWidth()/2 - rank.width/2;
-    	rank.y = 4 * rank.height;
+    	rank.y = 6 * rank.height;
     	quit.x = janela.getWidth()/2 - quit.width/2;
-    	quit.y = 6 * quit.height;
+    	quit.y = 8 * quit.height;
     }
     void desenha()
     {
@@ -50,26 +49,22 @@ public class Menu {
         while(executando){
             desenha();
             if(mouse.isOverObject(play)){
-            	play = new GameImage("Images/PlaySelecionado.png");
-            	posiciona_botao();
+            	play.loadImage("Images/PlaySelecionado.png");
             	if(mouse.isLeftButtonPressed()) {
             		Gameplay jogo = new Gameplay(janela);
             	}
             }
             else {
-            	play = new GameImage("Images/Play.png");
-            	posiciona_botao();
+            	play.loadImage("Images/Play.png");
             }
             if(mouse.isOverObject(rank)){
-            	rank = new GameImage("Images/RankSelecionado.png");
-            	posiciona_botao();
+            	rank.loadImage("Images/RankSelecionado.png");
             	if(mouse.isLeftButtonPressed()) {
             		//Acessa arquivo e faz os paranauê;
             	}
             }
             else {
-            	rank = new GameImage("Images/Rank.png");
-            	posiciona_botao();
+            	rank.loadImage("Images/Rank.png");
             }
             /*
             if ( teclado.keyDown(KeyEvent.VK_2)== true ){
@@ -80,17 +75,14 @@ public class Menu {
             //Creditos jogo = new Creditos(janela);
 
             }*/
-
             if (mouse.isOverObject(quit)){
-            	quit = new GameImage("Images/QuitSelecionado.png");
-            	posiciona_botao();
+            	quit.loadImage("Images/QuitSelecionado.png");
             	if(mouse.isLeftButtonPressed()) {
             		janela.exit();
             	}
              }
             else {
-            	quit = new GameImage("Images/Quit.png");
-            	posiciona_botao();
+            	quit.loadImage("Images/Quit.png");
             }
         }
     }
