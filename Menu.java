@@ -11,6 +11,7 @@ public class Menu {
     GameImage play;
     GameImage rank;
     GameImage quit;
+    GameImage titulo;
     Mouse mouse;
     boolean executando = true;
 
@@ -26,16 +27,19 @@ public class Menu {
         play = new GameImage("Images/Play.png");
         rank = new GameImage("Images/Rank.png");
         quit = new GameImage("Images/Quit.png");
+        titulo = new GameImage("Images/titulo.png");
         posiciona_botoes();
         mouse = janela.getMouse();
     }
     void posiciona_botoes() {
+    	titulo.x = janela.getWidth()/2 - titulo.width/2;
+    	titulo.y = 50;
     	play.x = janela.getWidth()/2 - play.width/2;
-    	play.y = 4 * play.height;
+    	play.y = 6 * play.height;
     	rank.x = janela.getWidth()/2 - rank.width/2;
-    	rank.y = 6 * rank.height;
+    	rank.y = 8 * rank.height;
     	quit.x = janela.getWidth()/2 - quit.width/2;
-    	quit.y = 8 * quit.height;
+    	quit.y = 10 * quit.height;
     }
     void desenha()
     {
@@ -43,6 +47,7 @@ public class Menu {
      play.draw();
      rank.draw();
      quit.draw();
+     titulo.draw();
      janela.update();
     }
     void loop(){
@@ -61,6 +66,7 @@ public class Menu {
             	rank.loadImage("Images/RankSelecionado.png");
             	if(mouse.isLeftButtonPressed()) {
             		//Acessa arquivo e faz os paranauê;
+            		Ranking ranking = new Ranking(janela);
             	}
             }
             else {
