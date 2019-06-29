@@ -4,14 +4,13 @@ import java.util.ArrayList;
 import java.util.List;
 
 import jplay.Animation;
-import jplay.Physics;
 import jplay.Sprite;
 import jplay.Window;
 
-public class Asteroides {
+public class Asteroides extends Thread {
 	public List<Asteroide> pedrinhas = new ArrayList<>();
 	
-	public Asteroides(int qtd_asteroides, Physics fisica) {
+	public Asteroides(int qtd_asteroides) {
 		for (int i = 0; i < qtd_asteroides; i++) {
 			if (Math.random() > 0.5) {
 				pedrinhas.add(new AsteroideG());
@@ -25,13 +24,13 @@ public class Asteroides {
 	public boolean colisao_jogador(Nave jogador, Window janela) { 
 		for (Asteroide obj: pedrinhas) {
 			if (jogador.collided(obj)) {
-				if (jogador.get_vidas().size() > 0) {
+				if (jogador.get_vidas().size() > 1) {
 					jogador.perde_vida();
 					jogador.cancelForces();
 					jogador.cont_ressurection = 0;
 				}
 				else {
-					//return true;
+					return true;
 				}
 				obj.destroi(pedrinhas, obj.getX(), obj.getY());
 				pedrinhas.remove(obj);
@@ -51,11 +50,17 @@ public class Asteroides {
 		}
 		return false;//se nenhum deles colidiu
 	}
-	public void desenha(Window janela) {
+	/*public void desenha(Window janela){
 		for (Asteroide obj: pedrinhas) {
 			obj.movimenta();
 			obj.verif_tela(janela);
 			obj.draw();
+		}
+	}*/
+	
+	public void verifica_bordas(Window janela) {
+		for (Asteroide obj: pedrinhas) {
+			obj.verif_tela(janela);
 		}
 	}
 	
@@ -63,10 +68,17 @@ public class Asteroides {
 		for (Asteroide target: pedrinhas) {
 			if (disparo.collided(target)) {
 				target.destroi(pedrinhas, target.getX(), target.getY());
-				pedrinhas.remove(target);
 				return true;
 			}
 		}
 		return false;
+	}
+	@Override
+	public void run() {
+		for (Asteroide obj: pedrinhas) {
+			obj.movimenta();
+			obj.draw();
+		}
+		
 	}
 }
