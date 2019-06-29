@@ -14,6 +14,7 @@ public class Tiro {
 	private List<Float> direcao = new ArrayList<>();
 	
 	public void inicializa_tiro(Sprite player, Physics fisica) {
+		new Som("Sounds/Cut_laser_shot2.wav").run();
 		disparos.add(new Sprite("Images/tiro.png"));
 		direcao.add(player.getBody().getAngle());
 		disparos.get(disparos.size()-1).setX(player.x + player.width/2 -disparos.get(disparos.size()-1).width/2);  
@@ -21,13 +22,13 @@ public class Tiro {
 		disparos.get(disparos.size()-1).setRotation(player.getBody().getAngle());
 	}
 	
-	public void desenha_tiro(Sprite player) {
+	public void desenha_tiro() {
 		for(Sprite disparo: disparos) {
 			disparo.draw();
 		}
 	}
 	
-	public void upadate_tiro(Window janela, Asteroides asteroides, int[] Score) {
+	public void upadate_tiro(Window janela, Asteroides asteroides, int[] Score,Ovni alien, Nave player) {
 		for(int i = 0; i < disparos.size();i++) {
 			if (disparos.get(i).y < -disparos.get(i).height || 
 				disparos.get(i).y > janela.getHeight()+disparos.get(i).height ||
@@ -37,9 +38,15 @@ public class Tiro {
 				direcao.remove(i);
 			}
 			else if (asteroides.update(disparos.get(i))) {
+				new Som("Sounds/asteroid_blast.wav").run();
 				disparos.remove(i);
 				direcao.remove(i);
 				Score[0] += 50;
+			}
+			else if(alien.update(disparos.get(i))) {
+				player.adiciona_vida();
+				disparos.remove(i);
+				direcao.remove(i);
 			}
 			else {
 				disparos.get(i).x += 10*Math.cos(direcao.get(i));

@@ -12,8 +12,9 @@ import java.util.List;
 
 
 public class Arquivo {
-	public List<Integer> pontuacao = new ArrayList<>();
-	public List<String> nome = new ArrayList<>();
+	//public List<Integer> pontuacao = new ArrayList<>();
+	//public List<String> nome = new ArrayList<>();
+	public List<Pessoa> jogadores = new ArrayList<>();
 	
 	
 	public void leitor() throws IOException, FileNotFoundException {
@@ -22,10 +23,11 @@ public class Arquivo {
         while (true) {
         	linha = arquivo.readLine();
             if (linha != null) {
-            	int a = Integer.parseInt(linha.split(" ")[0]);
-            	String b = linha.split(" ")[1];
-                pontuacao.add(a);
-                nome.add(b);
+            	int a = Integer.parseInt(linha.split(" ")[1]);
+            	String b = linha.split(" ")[0];
+            	jogadores.add(new Pessoa(b,a));
+                //pontuacao.add(a);
+                //nome.add(b);
             } else
                 break;
             
@@ -41,31 +43,31 @@ public class Arquivo {
     	if(teste.exists()) {
     		leitor();
     		BufferedWriter arquivo = new BufferedWriter(new FileWriter("Ranking.txt"));
-    		if (pontuacao.size()<3) {
-    			limite = pontuacao.size();
+    		if (jogadores.size()<3) {
+    			limite = jogadores.size();
     		}else {
     			limite = 3;
     		}
     		for (int i = 0; i < limite;) {
-    			int j = pontuacao.get(i);
+    			int j = jogadores.get(i).pontuacao;
     			if (pont>j) {
-    				arquivo.append(pont +" " + jogador + "\r\n");
+    				arquivo.append(jogador +" " + pont + "\n");
     				entrou = 1;
-    				arquivo.append(pontuacao.get(i) +" " + nome.get(i) + "\r\n");
+    				arquivo.append(jogadores.get(i).nome +" " + jogadores.get(i).pontuacao + "\n");
     				i+=2;
     			}
     			else {
-    				arquivo.append(pontuacao.get(i) +" " + nome.get(i) + "\r\n");
+    				arquivo.append(jogadores.get(i).nome +" " + jogadores.get(i).pontuacao + "\n");
     				i++;
     			}
     		}
     		if (limite < 3 & entrou == 0 ) {
-				arquivo.append(pont +" " + jogador + "\r\n");
+				arquivo.append(jogador +" " + pont + "\n");
 			}
 		arquivo.close();
     	}else {
     		BufferedWriter arquivo = new BufferedWriter(new FileWriter("Ranking.txt"));
-    		arquivo.append(pont +" " + jogador + "\r\n");
+    		arquivo.append(jogador + " " + pont + "\n");
     		arquivo.close();
     	}
     }

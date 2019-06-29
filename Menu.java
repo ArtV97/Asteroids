@@ -11,7 +11,6 @@ public class Menu {
     GameImage play;
     GameImage rank;
     GameImage quit;
-    GameImage titulo;
     Mouse mouse;
     boolean executando = true;
 
@@ -27,13 +26,10 @@ public class Menu {
         play = new GameImage("Images/Play.png");
         rank = new GameImage("Images/Rank.png");
         quit = new GameImage("Images/Quit.png");
-        titulo = new GameImage("Images/titulo.png");
         posiciona_botoes();
         mouse = janela.getMouse();
     }
     void posiciona_botoes() {
-    	titulo.x = janela.getWidth()/2 - titulo.width/2;
-    	titulo.y = 50;
     	play.x = janela.getWidth()/2 - play.width/2;
     	play.y = 6 * play.height;
     	rank.x = janela.getWidth()/2 - rank.width/2;
@@ -47,7 +43,6 @@ public class Menu {
      play.draw();
      rank.draw();
      quit.draw();
-     titulo.draw();
      janela.update();
     }
     void loop(){
@@ -56,7 +51,7 @@ public class Menu {
             if(mouse.isOverObject(play)){
             	play.loadImage("Images/PlaySelecionado.png");
             	if(mouse.isLeftButtonPressed()) {
-            		Gameplay jogo = new Gameplay(janela);
+            		new Gameplay(janela);
             	}
             }
             else {
@@ -65,22 +60,12 @@ public class Menu {
             if(mouse.isOverObject(rank)){
             	rank.loadImage("Images/RankSelecionado.png");
             	if(mouse.isLeftButtonPressed()) {
-            		//Acessa arquivo e faz os paranauê;
-            		Ranking ranking = new Ranking(janela);
+            		new Ranking(janela);
             	}
             }
             else {
             	rank.loadImage("Images/Rank.png");
             }
-            /*
-            if ( teclado.keyDown(KeyEvent.VK_2)== true ){
-             //Instrucao jogo = new Instrucao(janela);
-             }
-
-            if( teclado.keyDown(KeyEvent.VK_3) == true){
-            //Creditos jogo = new Creditos(janela);
-
-            }*/
             if (mouse.isOverObject(quit)){
             	quit.loadImage("Images/QuitSelecionado.png");
             	if(mouse.isLeftButtonPressed()) {
