@@ -2,8 +2,6 @@ package asteroids;
 
 import java.util.List;
 
-import jplay.Physics;
-
 public class AsteroideP extends Asteroide{
 
 	public AsteroideP() {
@@ -12,7 +10,7 @@ public class AsteroideP extends Asteroide{
 
 	@Override
 	public void destroi(List  pedrinhas, double pos_x, double pos_y) {
-		// TODO Auto-generated method stub
+		pedrinhas.remove(this);
 	}
 
 	@Override

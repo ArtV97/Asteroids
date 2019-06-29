@@ -17,6 +17,7 @@ public class AsteroideM extends Asteroide{
 		AsteroideP a2 = new AsteroideP();
 		a2.setX(pos_x);
 		a2.setY(pos_y);
+		pedrinhas.remove(this);
 		pedrinhas.add(a1);
 		pedrinhas.add(a2);
 	}

@@ -2,11 +2,10 @@ package asteroids;
 
 import java.util.List;
 
-import jplay.Physics;
 import jplay.Sprite;
 import jplay.Window;
 
-public abstract class Asteroide extends Sprite{
+public abstract class Asteroide extends Sprite {
 	int direcao_X;
 	int direcao_Y;
 
@@ -33,15 +32,11 @@ public abstract class Asteroide extends Sprite{
   		while (400 < x && x < 600) { 
 			x = Math.random() * 800;
 		}
-  		while (200 < y && y < 300) {
+  		while (200 < y && y < 400) {
   			y = Math.random() * 600;
   		}
 		this.setX(x);
   		this.setY(y);
-		//movimentando o Asteroide
-		//this.getBody().setAngularVelocity(1*direcao_X);
-		//this.applyForceY(direcao_Y*5*Math.sin(this.getBody().getAngle()));
-		//this.applyForceX(direcao_X*5*Math.cos(this.getBody().getAngle()));
 	}
 	//verifica se o Asteroide saiu da tela
 	public void verif_tela(Window janela) {
