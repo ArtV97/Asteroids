@@ -13,11 +13,11 @@ public class Gameplay {
 	Keyboard teclado;
 	Physics fisica;
 	Nave player;
-	int nivel = 1;
 	int Score[] = {0};
 	int qtd_asteroides = 4;
 	int asteroides_destruidos = 0;
 	Asteroides asteroides;
+	Ovni alien = new Ovni();
 	boolean executando = true;
 	
 	public Gameplay(Window janela) {
@@ -34,23 +34,26 @@ public class Gameplay {
 		this.fundo = new GameImage("Images/background.png");
 		this.player = new Nave();
 		fisica.createBodyFromSprite(player, false);
-		player.setMass(1f);  
-		player.setFriction(0.2f);  
+		player.setMass(1f);
+		player.setFriction(0.2f);
 		player.setRestitution(0f);
 		player.setX(janela.getWidth()/2 - player.width/2);
 		player.setY(janela.getHeight()/2 - player.height/2);
 		fisica.createBodyFromSprite(player, false);
-		asteroides = new Asteroides(qtd_asteroides, fisica);
+		asteroides = new Asteroides(qtd_asteroides);
 	}
 	
 	public void desenha() {
 		this.fundo.draw();
-		asteroides.desenha(janela);
+		alien.movimenta(janela); //movimenta e desenha o Ovni
+		asteroides.verifica_bordas(janela);
+		asteroides.run(); //movimenta e desenha os asteroids usando uma Thread
 		player.desenha_vidas();
 		janela.drawText("Score: "+Score[0], 0, 10, new Color(255,255,255));
+		player.verif_tela(janela);
 		this.player.draw();
-		player.tiro.desenha_tiro(player);
-		player.tiro.upadate_tiro(janela, asteroides, Score);
+		player.tiro.desenha_tiro();
+		player.tiro.upadate_tiro(janela, asteroides, Score, alien, player);
 		fisica.update();
 		this.janela.update();
 		janela.delay(12);
@@ -59,10 +62,12 @@ public class Gameplay {
 	public void loop() {
 		while(executando) {
 			desenha();
+			alien.sorteia(player.get_vidas().size()); //Verifica se um Ovni vai aparecer
 			if (player.cont_ressurection > player.cooldown_ressurection) {
 				player.loadImage("Images/nave11.png");
 				if (asteroides.colisao_jogador(player, janela)) {
-					//Instancia classe Gameover
+					new Gameover(Score[0], janela);
+					return;
 				}
 			}
 			else {
@@ -70,7 +75,7 @@ public class Gameplay {
 			}
 			if (asteroides.pedrinhas.size() == 0) {//recomeça se todos foram destruídos
 				qtd_asteroides += 1;
-				asteroides = new Asteroides(qtd_asteroides, fisica);
+				asteroides = new Asteroides(qtd_asteroides);
 			}
 			player.ultimo_disparo += janela.deltaTime(); //delta time retorna o tempo em milisegundos
 			player.cont_ressurection += janela.deltaTime();//conta o tempo desde que o player morreu
@@ -88,19 +93,6 @@ public class Gameplay {
 			if (teclado.keyDown(Keyboard.SPACE_KEY) && player.ultimo_disparo > player.reload) {
 				player.tiro.inicializa_tiro(player, fisica);
 				player.ultimo_disparo = 0;
-			}
-			//limites da tela do jogador
-			if (player.y > janela.getHeight()) {
-				player.setY(-player.height);
-			}
-			else if (player.y < -player.height) {
-				player.setY(janela.getHeight());
-			}
-			else if (player.x > janela.getWidth()) {
-				player.setX(-player.width);
-			}
-			else if (player.x < -player.width) {
-				player.setX(janela.getWidth());
 			}
 			else if (teclado.keyDown(Keyboard.ESCAPE_KEY)) {
 				return;
