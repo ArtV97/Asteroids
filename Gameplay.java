@@ -46,15 +46,7 @@ public class Gameplay {
 	public void desenha() {
 		this.fundo.draw();
 		alien.movimenta(janela); //movimenta e desenha o Ovni
-		asteroides.verifica_bordas(janela);
-		//asteroides.desenha(janela); //movimenta e desenha os asteroids
-		Thread t1 = new Thread(asteroides);
-		t1.start();
-		try {
-			t1.join();
-		} catch (InterruptedException e) {
-			e.printStackTrace();
-		}
+		asteroides.desenha(janela); //movimenta e desenha os asteroids
 		player.desenha_vidas();
 		janela.drawText("Score: "+Score[0], 0, 10, new Color(255,255,255));
 		player.verif_tela(janela);

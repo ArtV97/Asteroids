@@ -7,7 +7,7 @@ import jplay.Animation;
 import jplay.Sprite;
 import jplay.Window;
 
-public class Asteroides implements Runnable {
+public class Asteroides {
 	public List<Asteroide> pedrinhas = new ArrayList<>();
 	
 	public Asteroides(int qtd_asteroides) {
@@ -50,17 +50,12 @@ public class Asteroides implements Runnable {
 		}
 		return false;//se nenhum deles colidiu
 	}
-	/*public void desenha(Window janela){
+	
+	public void desenha(Window janela){
 		for (Asteroide obj: pedrinhas) {
 			obj.movimenta();
 			obj.verif_tela(janela);
 			obj.draw();
-		}
-	}*/
-	
-	public void verifica_bordas(Window janela) {
-		for (Asteroide obj: pedrinhas) {
-			obj.verif_tela(janela);
 		}
 	}
 	
@@ -72,13 +67,5 @@ public class Asteroides implements Runnable {
 			}
 		}
 		return false;
-	}
-	@Override
-	public void run() {
-		for (Asteroide obj: pedrinhas) {
-			obj.movimenta();
-			obj.draw();
-		}
-		
 	}
 }
