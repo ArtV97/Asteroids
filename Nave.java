@@ -58,7 +58,7 @@ public class Nave extends Sprite{
 		vidas.add(nova_vida);
 	}
 	public void perde_vida() {
-		new Som("Sounds/explosao_nave.wav").run();
+		new Thread(new Som("Sounds/explosao_nave.wav")).start();
 		vidas.remove(vidas.size() -1);
 	}
 	public void desenha_vidas() {

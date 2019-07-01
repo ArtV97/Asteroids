@@ -14,7 +14,7 @@ public class Tiro {
 	private List<Float> direcao = new ArrayList<>();
 	
 	public void inicializa_tiro(Sprite player, Physics fisica) {
-		new Som("Sounds/Cut_laser_shot2.wav").run();
+		new Thread(new Som("Sounds/Cut_laser_shot2.wav")).start();
 		disparos.add(new Sprite("Images/tiro.png"));
 		direcao.add(player.getBody().getAngle());
 		disparos.get(disparos.size()-1).setX(player.x + player.width/2 -disparos.get(disparos.size()-1).width/2);  
@@ -38,7 +38,7 @@ public class Tiro {
 				direcao.remove(i);
 			}
 			else if (asteroides.update(disparos.get(i))) {
-				new Som("Sounds/asteroid_blast.wav").run();
+				new Thread(new Som("Sounds/asteroid_blast.wav")).start();
 				disparos.remove(i);
 				direcao.remove(i);
 				Score[0] += 50;

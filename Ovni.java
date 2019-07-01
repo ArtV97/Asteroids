@@ -13,7 +13,7 @@ public class Ovni {
 		if (et.size() == 0 && n_vidas < 3 && Math.random() < 0.0001) {
 			et.add(new GameImage("Images/Ufo.png"));
 			et.get(0).y = et.get(0).height/2;
-			new Som("Sounds/Ufo.wav").run();
+			new Thread(new Som("Sounds/Ufo.wav")).start();
 		}
 	}
 	
