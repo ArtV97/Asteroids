@@ -7,7 +7,7 @@ import jplay.Animation;
 import jplay.Sprite;
 import jplay.Window;
 
-public class Asteroides extends Thread {
+public class Asteroides implements Runnable {
 	public List<Asteroide> pedrinhas = new ArrayList<>();
 	
 	public Asteroides(int qtd_asteroides) {
